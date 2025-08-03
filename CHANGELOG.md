@@ -68,7 +68,7 @@ instructions, because git commits are used to generate release notes:
 - [Bugfix] Fix MFE runtime config via site configuration in dev mode (by @arbrandes).
 - [Bugfix] Make plugin compatible with Python 3.12 by removing dependency on `pkg_resources`. (by @regisb)
 - [Bugfix] Make sure course-authoring mfe is present in `MFE_APPS` before applying cms-development-settings. (by @Danyal-Faheem)
-- [Bugfix] Fix issue of `MFE_HOST` url redirection to `LMS_HOST` (by @hinakhadim)
+- [Bugfix] Fix issue of `TEST_MFE_HOST` url redirection to `TEST_LMS_HOST` (by @hinakhadim)
 - [Bugfix] Added the learner-dashboard-dev image to the gitlab ci. (by @Danyal-Faheem)
 - [Improvement] Adds the `COURSE_AUTHORING_MFE_BASE_URL` to `MFE_CONFIG` pointing to the Course Authoring MFE address. (by @rpenido)
 
@@ -99,7 +99,7 @@ instructions, because git commits are used to generate release notes:
 
 - [Improvement] Include additional patches in the Dockerfile to add instructions just before the build step. (by @MoisesGSalas)
 - [Improvement] Allow to patch MFE Caddyfile. (by @snglth)
-- [Feature] The new `CONFIG_LOADED` action checks if `MFE_HOST` is a subdomain of `LMS_HOST`. If not, display a warning message to the user. (by @CodeWithEmad)
+- [Feature] The new `CONFIG_LOADED` action checks if `TEST_MFE_HOST` is a subdomain of `TEST_LMS_HOST`. If not, display a warning message to the user. (by @CodeWithEmad)
 - [Bugfix] Fix automated image building in nightly. (by @regisb)
 
 <a id='changelog-16.1.1'></a>

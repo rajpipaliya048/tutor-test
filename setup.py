@@ -22,7 +22,7 @@ def load_about():
 ABOUT = load_about()
 
 setup(
-    name="tutor-mfe",
+    name="tutor-test",
     version=ABOUT["__version__"],
     url="https://github.com/overhangio/tutor-mfe",
     project_urls={
@@ -42,7 +42,7 @@ setup(
     python_requires=">=3.9",
     install_requires=["tutor>=19.0.0,<20.0.0"],
     extras_require={"dev": ["tutor[dev]>=19.0.0,<20.0.0"]},
-    entry_points={"tutor.plugin.v1": ["mfe = tutormfe.plugin"]},
+    entry_points={"tutor.plugin.v1": ["test = tutortest.plugin"]},
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",

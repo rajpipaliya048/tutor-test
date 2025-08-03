@@ -16,7 +16,7 @@ module.exports = merge(baseDevConfig, {
     allowedHosts: 'all',
     proxy: {
       '/api/mfe_config/v1': {
-        target: 'http://{{ LMS_HOST }}:8000',
+        target: 'http://{{ TEST_LMS_HOST }}:8000',
         changeOrigin: true,
       }
     }

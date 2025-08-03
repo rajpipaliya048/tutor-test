@@ -24,7 +24,7 @@ config = {
         "VERSION": __version__,
         "DOCKER_IMAGE": "{{ DOCKER_REGISTRY }}overhangio/openedx-mfe:{{ MFE_VERSION }}",
         "DOCKER_IMAGE_DEV_PREFIX": "{{ DOCKER_REGISTRY }}overhangio/openedx",
-        "HOST": "apps.{{ LMS_HOST }}",
+        "HOST": "apps.{{ TEST_LMS_HOST }}",
         "COMMON_VERSION": "{{ OPENEDX_COMMON_VERSION }}",
         "CADDY_DOCKER_IMAGE": "{{ DOCKER_IMAGE_CADDY }}",
     },
@@ -138,21 +138,21 @@ tutor_hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
 # Build, pull and push mfe base image
 tutor_hooks.Filters.IMAGES_BUILD.add_item(
     (
-        "mfe",
-        os.path.join("plugins", "mfe", "build", "mfe"),
+        "test",
+        os.path.join("plugins", "test", "build", "test"),
         "{{ MFE_DOCKER_IMAGE }}",
         (),
     )
 )
 tutor_hooks.Filters.IMAGES_PULL.add_item(
     (
-        "mfe",
+        "test",
         "{{ MFE_DOCKER_IMAGE }}",
     )
 )
 tutor_hooks.Filters.IMAGES_PUSH.add_item(
     (
-        "mfe",
+        "test",
         "{{ MFE_DOCKER_IMAGE }}",
     )
 )
@@ -180,9 +180,9 @@ def _mounted_mfe_image_management() -> None:
 with open(
     os.path.join(
         str(
-            importlib_resources.files("tutormfe")
+            importlib_resources.files("tutortest")
             / "templates"
-            / "mfe"
+            / "test"
             / "tasks"
             / "lms"
             / "init"
@@ -233,10 +233,10 @@ def _print_mfe_public_hosts(
     hostnames: list[str], context_name: t.Literal["local", "dev"]
 ) -> list[str]:
     if context_name == "local":
-        hostnames.append("{{ MFE_HOST }}")
+        hostnames.append("{{ TEST_MFE_HOST }}")
     else:
         for mfe_name, mfe_attrs in iter_mfes():
-            hostnames.append("{{ MFE_HOST }}" + f":{mfe_attrs['port']}/{mfe_name}")
+            hostnames.append("{{ TEST_MFE_HOST }}" + f":{mfe_attrs['port']}/{mfe_name}")
     return hostnames
 
 
@@ -303,14 +303,14 @@ tutor_hooks.Filters.CONFIG_OVERRIDES.add_items(
 @tutor_hooks.Actions.CONFIG_LOADED.add()
 def _check_mfe_host(config: Config) -> None:
     """
-    This will check if the MFE_HOST is a subdomain of LMS_HOST.
+    This will check if the TEST_MFE_HOST is a subdomain of TEST_LMS_HOST.
     if not, prints a warning to notify the user.
     """
 
-    lms_host = get_typed(config, "LMS_HOST", str, "")
-    mfe_host = get_typed(config, "MFE_HOST", str, "")
+    lms_host = get_typed(config, "TEST_LMS_HOST", str, "")
+    mfe_host = get_typed(config, "TEST_MFE_HOST", str, "")
     if not mfe_host.endswith("." + lms_host):
         fmt.echo_alert(
-            f'Warning: MFE_HOST="{mfe_host}" is not a subdomain of LMS_HOST="{lms_host}". '
+            f'Warning: TEST_MFE_HOST="{mfe_host}" is not a subdomain of TEST_LMS_HOST="{lms_host}". '
             "This configuration is not typically recommended and may lead to unexpected behavior."
         )

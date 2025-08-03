@@ -2,7 +2,7 @@ mfe:
     ports:
         {%- for app_name, app in iter_mfes() %}
         {%- if not iter_mounts(MOUNTS, app_name)|list %}
-        - {{ app["port"] }}:8002 # {{ app_name }}
+        - {{ app["port"] }}:8004 # {{ app_name }}
         {%- endif %}
         {%- endfor %}
 

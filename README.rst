@@ -33,11 +33,11 @@ To enable this plugin, run::
     tutor plugins enable mfe
     tutor local launch
 
-When running the plugin in production, it is recommended that you set up a catch-all CNAME for subdomains at the DNS provider: see the `Configuring DNS Records <https://docs.tutor.edly.io/install.html#configuring-dns-records>`__ section in the Tutor documentation for more details.  This way, the plugin will work out of the box with no additional configuration.  Which is to say, if your ``LMS_HOST`` is set to `myopenedx.com` the MFEs this plugin provides will be accessible under `apps.myopenedx.com` by default.
+When running the plugin in production, it is recommended that you set up a catch-all CNAME for subdomains at the DNS provider: see the `Configuring DNS Records <https://docs.tutor.edly.io/install.html#configuring-dns-records>`__ section in the Tutor documentation for more details.  This way, the plugin will work out of the box with no additional configuration.  Which is to say, if your ``TEST_LMS_HOST`` is set to `myopenedx.com` the MFEs this plugin provides will be accessible under `apps.myopenedx.com` by default.
 
-To check what the current value of `MFE_HOST` is actually set to, run::
+To check what the current value of `TEST_MFE_HOST` is actually set to, run::
 
-    tutor config printvalue MFE_HOST
+    tutor config printvalue TEST_MFE_HOST
 
 Account
 ~~~~~~~
@@ -45,7 +45,7 @@ Account
 .. image:: https://raw.githubusercontent.com/overhangio/tutor-mfe/release/media/account.png
     :alt: Account MFE screenshot
 
-An MFE to manage account-specific information for every LMS user. Each user's account page is available at ``http(s)://{{ MFE_HOST }}/account``. For instance, when running locally: https://apps.local.openedx.io/account.
+An MFE to manage account-specific information for every LMS user. Each user's account page is available at ``http(s)://{{ TEST_MFE_HOST }}/account``. For instance, when running locally: https://apps.local.openedx.io/account.
 
 Authn
 ~~~~~
@@ -86,7 +86,7 @@ Gradebook
 .. image:: https://raw.githubusercontent.com/overhangio/tutor-mfe/release/media/gradebook.png
     :alt: Gradebook MFE screenshot
 
-This instructor-only MFE is for viewing individual and aggregated grade results for a course. To access this MFE, go to a course → Instructor tab → Student Admin → View gradebook. The URL should be: ``http(s)://{{ MFE_HOST }}/gradebook/{{ course ID }}``. When running locally, the gradebook of the demo course is available at: http://apps.local.openedx.io/gradebook/course-v1:edX+DemoX+Demo_Course
+This instructor-only MFE is for viewing individual and aggregated grade results for a course. To access this MFE, go to a course → Instructor tab → Student Admin → View gradebook. The URL should be: ``http(s)://{{ TEST_MFE_HOST }}/gradebook/{{ course ID }}``. When running locally, the gradebook of the demo course is available at: http://apps.local.openedx.io/gradebook/course-v1:edX+DemoX+Demo_Course
 
 Learner Dashboard
 ~~~~~~~~~~~~~~~~~
@@ -118,7 +118,7 @@ Profile
 .. image:: https://raw.githubusercontent.com/overhangio/tutor-mfe/release/media/profile.png
     :alt: Profile MFE screenshot
 
-Edit and display user-specific profile information. The profile page of every user is visible at ``http(s)://{{ MFE_HOST }}/profile/u/{{ username }}``. For instance, when running locally, the profile page of the "admin" user is: http://apps.local.openedx.io/profile/u/admin.
+Edit and display user-specific profile information. The profile page of every user is visible at ``http(s)://{{ TEST_MFE_HOST }}/profile/u/{{ username }}``. For instance, when running locally, the profile page of the "admin" user is: http://apps.local.openedx.io/profile/u/admin.
 
 
 MFE management
@@ -150,7 +150,7 @@ Other MFE developers can take advantage of this plugin to deploy their own MFEs.
 
 The MFE assets will then be bundled in the "mfe" Docker image whenever it is rebuilt with ``tutor images build mfe``.
 
-Assets will be served at ``http(s)://{{ MFE_HOST }}/mymfe``. Developers are free to add extra template patches to their plugins, as usual: for instance LMS setting patches to make sure that the LMS correctly connects to the MFEs.
+Assets will be served at ``http(s)://{{ TEST_MFE_HOST }}/mymfe``. Developers are free to add extra template patches to their plugins, as usual: for instance LMS setting patches to make sure that the LMS correctly connects to the MFEs.
 
 Disabling individual MFEs
 ~~~~~~~~~~~~~~~~~~~~~~~~~

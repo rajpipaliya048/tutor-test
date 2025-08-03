@@ -1,0 +1,7 @@
+{{ TEST_MFE_HOST }}{$default_site_port} {
+    redir / {% if ENABLE_HTTPS %}https://{% else %}http://{% endif %}{{ TEST_LMS_HOST }}
+    request_body {
+        max_size 2MB
+    }
+    import proxy "mfe:8004"
+}
