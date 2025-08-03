@@ -133,11 +133,11 @@ Adding new MFEs
 - As of Tutor v17 (Quince release) you must make sure that the git URL of your MFE repository ends with ``.git``. Otherwise the plugin build will fail.
 - As of Tutor v18 (Redwood release) all MFEs must provide a ``make pull_translations`` command. Otherwise the plugin build will fail. Providing an empty command is enough to bypass this requirement. See the `Custom translations section <#mfe-custom-translations>`_ for more information.
 
-Other MFE developers can take advantage of this plugin to deploy their own MFEs. To declare a new MFE, create a Tutor plugin and add your MFE configuration to the ``tutormfe.hooks.MFE_APPS`` filter. This configuration should include the name, git repository (and optionally: git branch or tag) and development port. For example:
+Other MFE developers can take advantage of this plugin to deploy their own MFEs. To declare a new MFE, create a Tutor plugin and add your MFE configuration to the ``tutortest.hooks.MFE_APPS`` filter. This configuration should include the name, git repository (and optionally: git branch or tag) and development port. For example:
 
 .. code-block:: python
 
-    from tutormfe.hooks import MFE_APPS
+    from tutortest.hooks import MFE_APPS
 
     @MFE_APPS.add()
     def _add_my_mfe(mfes):
@@ -315,7 +315,7 @@ It's possible to take advantage of this plugin's hooks to configure frontend plu
 
 .. code-block:: python
 
-    from tutormfe.hooks import PLUGIN_SLOTS
+    from tutortest.hooks import PLUGIN_SLOTS
 
     PLUGIN_SLOTS.add_items([
         # Hide the default footer
@@ -346,11 +346,11 @@ It's possible to take advantage of this plugin's hooks to configure frontend plu
         )
     ])
 
-Let's take a closer look at what's happening here.  To begin with, we're using tutormfe's own ``PLUGIN_SLOTS`` filter.  It's a regular Tutor filter, but you won't find it in the main ``tutor`` package:
+Let's take a closer look at what's happening here.  To begin with, we're using tutortest's own ``PLUGIN_SLOTS`` filter.  It's a regular Tutor filter, but you won't find it in the main ``tutor`` package:
 
 .. code-block:: python
 
-    from tutormfe.hooks import PLUGIN_SLOTS
+    from tutortest.hooks import PLUGIN_SLOTS
 
 Next up, we're adding actual slot configuration, starting by hiding the default footer.  The first parameter in a filter item specifies which MFE to apply the slot configuration to; for example: ``"learner-dashboard"``, or ``"learning"``. We're using ``"all"`` here, which is a special case: it means the slot configuration should be applied to all MFEs that actually have that slot.  (If a particular MFE doesn't have the slot, it will just ignore its configuration.)
 
@@ -534,7 +534,7 @@ This is the list of all patches used across tutor-mfe (outside of any plugin). A
 
     git clone https://github.com/overhangio/tutor-mfe
     cd tutor-mfe
-    git grep "{{ patch" -- tutormfe/templates
+    git grep "{{ patch" -- tutortest/templates
 
 mfe-env-config-buildtime-imports
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -545,7 +545,7 @@ It gets rendered at the very top of the file. You should use normal `ES6 import 
 
 Note that if you want to only import a module for a particular MFE, doing it here won't work: you'll probably want to use the ``mfe-env-config-runtime-definitions-{}`` patch described below.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/env.config.jsx``
+File changed: ``tutortest/templates/mfe/build/mfe/env.config.jsx``
 
 mfe-env-config-buildtime-definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -554,7 +554,7 @@ Use this patch for arbitrary ``env.config.jsx`` javascript code that gets evalua
 
 There's no version of this patch that runs per MFE.  If you want to define MFE-specific code, you should use the MFE-specific ``mfe-env-config-runtime-definitions-{}`` to achieve the same effect.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/env.config.jsx``
+File changed: ``tutortest/templates/mfe/build/mfe/env.config.jsx``
 
 mfe-env-config-runtime-definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -570,7 +570,7 @@ Note the second line in the example above: default module exports work a little 
 
 Warning: if the dynamic import of a module fails for whatever reason, ``env.config.jsx`` execution will fail silently.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/env.config.jsx``
+File changed: ``tutortest/templates/mfe/build/mfe/env.config.jsx``
 
 mfe-env-config-runtime-definitions-{}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -579,14 +579,14 @@ With this patch you can conditionally import modules or define code for specific
 
 As above, make sure to use the ``import()`` function.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/env.config.jsx``
+File changed: ``tutortest/templates/mfe/build/mfe/env.config.jsx``
 
 mfe-env-config-runtime-final
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 At this point, ``env.config.jsx`` is ready to return the ``config`` object to the initialization code at runtime. You can use this patch to do anything to the object, including using modules that were imported dynamically earlier.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/env.config.jsx``
+File changed: ``tutortest/templates/mfe/build/mfe/env.config.jsx``
 
 mfe-lms-development-settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -614,21 +614,21 @@ mfe-webpack-dev-config
 
 Add any configurations at the end of the development webpack config file in Javascript format.
 
-File changed: ``tutormfe/templates/mfe/apps/mfe/webpack.dev-tutor.config.js``
+File changed: ``tutortest/templates/mfe/apps/mfe/webpack.dev-tutor.config.js``
 
 mfe-dockerfile-base
 ~~~~~~~~~~~~~~~~~~~
 
 Add Dockerfile instructions that will be applied to the base layer of the "mfe" image. This base layer is used both in production and development, for all applications.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-pre-npm-install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add any instructions for before the npm install is initiated.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-pre-npm-install-{}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -637,21 +637,21 @@ Add any instructions for before the npm install is initiated for a specific MFE.
 
 Example: ``mfe-dockerfile-pre-npm-install-learning`` will only apply any instructions specified for the learning MFE.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-production-final
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add any instructions in the final layer. Useful for overriding the CMD or ENTRYPOINT.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-post-npm-install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add any instructions for after the npm install has completed. This will apply the instructions to every MFE. For an example on the usage of this patch, check out `here <#mfe-docker-post-npm-install>`_.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-post-npm-install-{}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -660,14 +660,14 @@ Add any instructions for after the npm install has completed for a specific MFE.
 
 Example: ``mfe-dockerfile-post-npm-install-authn`` will only apply any instructions specified for the authn MFE.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-pre-npm-build
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add any instructions for before the build step initializes. This will apply the instructions to every MFE. For an example on the usage of this patch, see `over here <#mfe-docker-pre-npm-build>`_.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-pre-npm-build-{}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -676,14 +676,14 @@ Add any instructions for before the build step initializes for a specific MFE. A
 
 Example: ``mfe-dockerfile-post-npm-build-learning`` will only apply any instructions specified for the learning MFE.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-post-npm-build
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add any instructions for after the build step has completed. This will apply the instructions to every MFE.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-dockerfile-post-npm-build-{}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -692,14 +692,14 @@ Add any instructions for after the build step has completed for a specific MFE. 
 
 Example: ``mfe-dockerfile-post-npm-build-learning`` will only apply any instructions specified for the learning MFE.
 
-File changed: ``tutormfe/templates/mfe/build/mfe/Dockerfile``
+File changed: ``tutortest/templates/mfe/build/mfe/Dockerfile``
 
 mfe-caddyfile
 ~~~~~~~~~~~~~
 
 Add any configurations for the mfe-caddyfile.
 
-File changed: ``tutormfe/templates/mfe/apps/mfe/Caddyfile``
+File changed: ``tutortest/templates/mfe/apps/mfe/Caddyfile``
 
 
 Troubleshooting
